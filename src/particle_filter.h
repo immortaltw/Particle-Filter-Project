@@ -119,7 +119,9 @@ class ParticleFilter {
   bool is_initialized;
   
   // Vector of weights of all particles
-  std::vector<double> weights; 
+  std::vector<double> weights;
+
+  double epsilon = 0.00001;
 };
 
 #endif  // PARTICLE_FILTER_H_

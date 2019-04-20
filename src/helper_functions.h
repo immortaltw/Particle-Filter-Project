@@ -117,6 +117,7 @@ inline bool read_map_data(std::string filename, Map& map) {
 
     // Add to landmark list of map
     map.landmark_list.push_back(single_landmark_temp);
+    map.landmark_map[id_i] = single_landmark_temp;
   }
   return true;
 }
@@ -246,6 +247,36 @@ inline bool read_landmark_data(std::string filename,
     observations.push_back(meas);
   }
   return true;
+}
+
+inline LandmarkObs transform_obs(const double x, const double y, const double theta, const LandmarkObs &obs) {
+  // Transform the x and y coordinates
+  double x_map, y_map;
+  x_map = x + (cos(theta) * obs.x) - (sin(theta) * obs.y);
+  y_map = y + (sin(theta) * obs.x) + (cos(theta) * obs.y);
+    
+  // Create new Position to hold transformed observation
+  LandmarkObs transformed_obs;
+  transformed_obs.id = obs.id;
+  transformed_obs.x = x_map;
+  transformed_obs.y = y_map;
+    
+  return transformed_obs;
+}
+
+inline double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs,
+                   double mu_x, double mu_y) {
+  // calculate normalization term
+  double gauss_norm;
+  gauss_norm = 1 / (2 * M_PI * sig_x * sig_y);
+
+  // calculate exponent
+  double exponent;
+  exponent = (pow(x_obs - mu_x, 2) / (2 * pow(sig_x, 2)))
+               + (pow(y_obs - mu_y, 2) / (2 * pow(sig_y, 2)));
+    
+  // calculate weight using normalization terms and exponent
+  return gauss_norm * exp(-exponent);
 }
 
 #endif  // HELPER_FUNCTIONS_H_
