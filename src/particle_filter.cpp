@@ -38,7 +38,6 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   is_initialized = true;
 
   // Add Gaussian noise to x, y, theta
-  std::default_random_engine gen;
   normal_distribution<double> dist_x(x, std[0]);
   normal_distribution<double> dist_y(y, std[1]);
   normal_distribution<double> dist_theta(theta, std[2]);
@@ -62,7 +61,6 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    *  http://www.cplusplus.com/reference/random/default_random_engine/
    */
 
-  std::default_random_engine gen;
   for (auto &p: particles) {
     double xp, yp, thetap;
     if (fabs(yaw_rate) < epsilon) {
@@ -178,7 +176,6 @@ void ParticleFilter::resample() {
    *   http://en.cppreference.com/w/cpp/numeric/random/discrete_distribution
    */
   vector<Particle> resampled;
-  std::default_random_engine gen;
   std::discrete_distribution<int> d(weights.begin(), weights.end());
   for (int i=0; i<particles.size(); ++i) {
     int idx = d(gen);

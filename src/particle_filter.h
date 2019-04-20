@@ -9,6 +9,7 @@
 #ifndef PARTICLE_FILTER_H_
 #define PARTICLE_FILTER_H_
 
+#include <random>
 #include <string>
 #include <vector>
 #include "helper_functions.h"
@@ -122,6 +123,8 @@ class ParticleFilter {
   std::vector<double> weights;
 
   double epsilon = 0.00001;
+
+  std::default_random_engine gen;
 };
 
 #endif  // PARTICLE_FILTER_H_
