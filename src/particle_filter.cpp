@@ -179,7 +179,7 @@ void ParticleFilter::resample() {
    */
   vector<Particle> resampled;
   std::default_random_engine gen;
-  std::discrete_distribution<double> d(weights.begin(), weights.end());
+  std::discrete_distribution<int> d(weights.begin(), weights.end());
   for (int i=0; i<particles.size(); ++i) {
     int idx = d(gen);
     resampled.push_back(particles[idx]);
